@@ -505,33 +505,6 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="import-overlay">
-  <div class="modal" style="max-width:760px;">
-    <div class="modal-head">
-      <h3>📥 Importar planificación mensual</h3>
-      <button class="modal-close" id="import-close">✕</button>
-    </div>
-    <p class="import-help">
-      Sube o pega un CSV (exportado de Excel/Google Sheets) con las columnas
-      <strong>Cliente, Día de publicación, Formato, Idea de contenido, Copy sugerido, Extra fin de semana</strong>.
-      Puedes incluir encabezados o dejarlas en ese mismo orden.
-    </p>
-    <div class="field">
-      <label>Archivo CSV</label>
-      <input type="file" id="import-file" accept=".csv,text/csv" />
-    </div>
-    <div class="import-or">— o pega los datos aquí —</div>
-    <div class="field">
-      <textarea id="import-paste" rows="7" placeholder="Cliente,Día de publicación,Formato,Idea de contenido,Copy sugerido,Extra fin de semana"></textarea>
-    </div>
-    <div id="import-preview"></div>
-    <div class="modal-actions">
-      <button type="button" class="btn btn-ghost" id="import-cancel">Cancelar</button>
-      <button type="button" class="btn btn-primary" id="import-confirm" disabled>Importar</button>
-    </div>
-  </div>
-</div>
-
 <div class="modal-overlay" id="profile-overlay"><div class="modal wide" id="profile-modal"></div></div>
 <div class="modal-overlay" id="quote-overlay"><div class="modal wide" id="quote-modal"></div></div>
 <div id="print-root"></div>
@@ -675,23 +648,6 @@ const SCHEMAS = {
       {key:"notas", label:"Notas", type:"textarea", full:true},
     ]
   },
-  content: {
-    label: "Contenido", singular: "Contenido", icon: "🎬", collection: "content",
-    orderBy: "fechaPublicacion",
-    columns: ["tema","clienteId","tipo","plataforma","estado","fechaPublicacion"],
-    fields: [
-      {key:"clienteId", label:"Cliente", type:"select-ref", ref:"clients"},
-      {key:"tipo", label:"Tipo", type:"select", options:["Reel","TikTok","Post","Carrusel","Story","Video","Campaña"]},
-      {key:"plataforma", label:"Plataforma", type:"text"},
-      {key:"tema", label:"Tema", type:"text", full:true},
-      {key:"copy", label:"Copy", type:"textarea", full:true},
-      {key:"fechaPublicacion", label:"Fecha de publicación", type:"date"},
-      {key:"estado", label:"Estado", type:"select", options:["Idea","Producción","Diseño","Revisión","Aprobado","Programado","Publicado"], default:"Idea"},
-      {key:"archivoUrl", label:"Link de archivo/diseño", type:"text", full:true},
-      {key:"responsable", label:"Responsable", type:"text"},
-      {key:"extraFinSemana", label:"Extra fin de semana", type:"textarea", full:true},
-    ]
-  },
   projects: {
     label: "Proyectos", singular: "Proyecto", icon: "📁", collection: "projects",
     orderBy: "deadline",
@@ -707,15 +663,19 @@ const SCHEMAS = {
     ]
   },
   finance_income: {
-    label: "Ingresos", singular: "Ingreso", icon: "💵", collection: "finance_income",
+    label: "Ventas", singular: "Venta", icon: "🧾", collection: "finance_income",
     orderBy: "fecha",
-    columns: ["concepto","clienteId","monto","estado","fecha"],
+    columns: ["fecha","clienteId","concepto","isv","monto","estado"],
     fields: [
+      {key:"fecha", label:"Fecha", type:"date"},
       {key:"clienteId", label:"Cliente", type:"select-ref", ref:"clients"},
       {key:"concepto", label:"Concepto", type:"text", required:true, full:true},
-      {key:"monto", label:"Monto (L)", type:"number", required:true},
-      {key:"fecha", label:"Fecha", type:"date"},
-      {key:"estado", label:"Estado", type:"select", options:["Pagado","Pendiente"], default:"Pendiente"},
+      {key:"cotizacionNumero", label:"No. de cotización (opcional)", type:"text"},
+      {key:"metodoPago", label:"Método de pago", type:"select", options:["Efectivo","Transferencia","Depósito","Cheque","Tarjeta","Otro"]},
+      {key:"subtotal", label:"Subtotal sin ISV (L)", type:"number"},
+      {key:"isv", label:"ISV (L)", type:"number"},
+      {key:"monto", label:"Total (L)", type:"number", required:true},
+      {key:"estado", label:"Estado de pago", type:"select", options:["Pagado","Pendiente"], default:"Pagado"},
     ]
   },
   finance_expense: {
@@ -729,18 +689,6 @@ const SCHEMAS = {
       {key:"fecha", label:"Fecha", type:"date"},
       {key:"proveedor", label:"Proveedor", type:"text"},
       {key:"metodoPago", label:"Método de pago", type:"select", options:["Efectivo","Transferencia","Depósito","Cheque","Tarjeta","Otro"]},
-    ]
-  },
-  documents: {
-    label: "Documentos", singular: "Documento", icon: "📄", collection: "documents",
-    orderBy: "nombre",
-    columns: ["nombre","clienteId","categoria","url"],
-    fields: [
-      {key:"nombre", label:"Nombre", type:"text", required:true, full:true},
-      {key:"clienteId", label:"Cliente (opcional)", type:"select-ref", ref:"clients"},
-      {key:"categoria", label:"Categoría", type:"select", options:["Contrato","Brief","Logo","Fotografía","Manual de marca","Presentación","Cotización","Factura","Recurso","Plantilla","Propuesta"]},
-      {key:"url", label:"Link del archivo (Drive, etc.)", type:"text", full:true},
-      {key:"notas", label:"Notas", type:"textarea", full:true},
     ]
   },
   prospects: {
@@ -784,20 +732,6 @@ const SCHEMAS = {
       {key:"estado", label:"Estado", type:"select", options:["Borrador","Enviada","Aceptada","Rechazada"], default:"Borrador"},
     ]
   },
-  objectives: {
-    label: "Objetivos", singular: "Objetivo", icon: "🎯", collection: "objectives",
-    orderBy: "tipo",
-    columns: ["titulo","tipo","periodo","progreso","estado"],
-    fields: [
-      {key:"titulo", label:"Título", type:"text", required:true, full:true},
-      {key:"tipo", label:"Tipo", type:"select", options:["Mensual","Trimestral","Anual"], default:"Mensual"},
-      {key:"periodo", label:"Periodo (ej. Agosto 2026)", type:"text"},
-      {key:"metaTexto", label:"Meta", type:"text", full:true},
-      {key:"progresoActual", label:"Progreso actual", type:"number"},
-      {key:"progresoObjetivo", label:"Progreso meta", type:"number"},
-      {key:"estado", label:"Estado", type:"select", options:["En progreso","Completado"], default:"En progreso"},
-    ]
-  },
   products: {
     label: "Productos", singular: "Producto", icon: "🛒", collection: "products",
     orderBy: "nombre",
@@ -811,40 +745,19 @@ const SCHEMAS = {
       {key:"descripcion", label:"Descripción", type:"textarea", full:true},
     ]
   },
-  sales: {
-    label: "Ventas", singular: "Venta", icon: "🧾", collection: "sales",
-    orderBy: "fecha",
-    columns: ["fecha","clienteId","concepto","isv","total","estado"],
-    fields: [
-      {key:"fecha", label:"Fecha", type:"date", required:true},
-      {key:"clienteId", label:"Cliente", type:"select-ref", ref:"clients"},
-      {key:"concepto", label:"Concepto", type:"text", required:true, full:true},
-      {key:"cotizacionNumero", label:"No. de cotización (opcional)", type:"text"},
-      {key:"metodoPago", label:"Método de pago", type:"select", options:["Efectivo","Transferencia","Depósito","Cheque","Tarjeta","Otro"]},
-      {key:"subtotal", label:"Subtotal sin ISV (L)", type:"number", required:true},
-      {key:"isv", label:"ISV (L)", type:"number"},
-      {key:"total", label:"Total (L)", type:"number", required:true},
-      {key:"estado", label:"Estado de pago", type:"select", options:["Pagado","Pendiente"], default:"Pagado"},
-      {key:"notas", label:"Notas", type:"textarea", full:true},
-    ]
-  },
 };
 
 const NAV = [
   {view:"dashboard", label:"Dashboard", icon:"🏠"},
   {view:"clients", label:"Clientes", icon:"👥"},
-  {view:"tasks", label:"Tareas", icon:"📋"},
-  {view:"content", label:"Contenido", icon:"🎬"},
-  {view:"projects", label:"Proyectos", icon:"📁"},
-  {view:"finance", label:"Finanzas", icon:"💰"},
-  {view:"documents", label:"Documentos", icon:"📄"},
-  {view:"prospects", label:"Prospectos / CRM", icon:"🧲"},
-  {view:"services", label:"Servicios y Paquetes", icon:"📦"},
   {view:"quotes", label:"Cotizaciones", icon:"📑"},
   {view:"products", label:"Productos", icon:"🛒"},
   {view:"sales", label:"Ventas", icon:"🧾"},
   {view:"expenses", label:"Gastos", icon:"💸"},
-  {view:"objectives", label:"Objetivos", icon:"🎯"},
+  {view:"tasks", label:"Tareas", icon:"📋"},
+  {view:"projects", label:"Proyectos", icon:"📁"},
+  {view:"prospects", label:"Prospectos / CRM", icon:"🧲"},
+  {view:"services", label:"Servicios y Paquetes", icon:"📦"},
 ];
 
 /* ============================== AUTH =================================== */
@@ -906,7 +819,7 @@ function startListeners(){
         return String(av).localeCompare(String(bv));
       });
       state.cache[schema.collection] = rows;
-      if (state.view === schema.collection || ["dashboard","finance","sales","expenses","quotes","clients"].includes(state.view) || state.profileId) {
+      if (state.view === schema.collection || ["dashboard","sales","expenses","quotes","clients"].includes(state.view) || state.profileId) {
         render();
       }
     }, (err) => {
@@ -957,7 +870,6 @@ document.getElementById("topbar-date").textContent = new Date().toLocaleDateStri
 const viewRoot = document.getElementById("view-root");
 const titleMap = {
   dashboard:["Dashboard","El centro de mando de Acapella"],
-  finance:["Finanzas","Ingresos, gastos e ingreso recurrente mensual"],
   quotes:["Cotizaciones","Cotizaciones imprimibles con ISV, ligadas al perfil del cliente"],
   sales:["Ventas","Registro de ventas por mes"],
   expenses:["Gastos","Registro de gastos por mes"],
@@ -971,8 +883,6 @@ function renderMain(){
   document.getElementById("topbar-sub").textContent = sub || "";
 
   if (state.view === "dashboard") return renderDashboard();
-  if (state.view === "finance") return renderFinance();
-  if (state.view === "content") return renderContent();
   if (state.view === "quotes") return renderQuotes();
   if (state.view === "sales") return renderLedger("sales");
   if (state.view === "expenses") return renderLedger("expenses");
@@ -980,42 +890,6 @@ function renderMain(){
   viewRoot.innerHTML = "";
 }
 
-/* ---------- DASHBOARD ---------- */
-function renderDashboard(){
-  const tasks = state.cache.tasks || [];
-  const today = todayISO();
-  const tasksToday = tasks.filter(t => t.deadline === today && t.estado !== "Completada");
-  const tasksOverdue = tasks.filter(t => t.deadline && t.deadline < today && t.estado !== "Completada");
-  const content = state.cache.content || [];
-  const contentPending = content.filter(c => c.estado !== "Publicado");
-  const clientsActive = (state.cache.clients||[]).filter(c => c.estado === "Activo");
-  const projectsActive = (state.cache.projects||[]).filter(p => p.estado === "Activo");
-  const thisMonth = today.slice(0,7);
-  const incomeThisMonth = (state.cache.finance_income||[]).filter(i => (i.fecha||"").startsWith(thisMonth)).reduce((s,i)=>s+(Number(i.monto)||0),0);
-  const mrr = clientsActive.reduce((s,c)=>s+(Number(c.precioMensual)||0),0);
-  const objectivesMonth = (state.cache.objectives||[]).filter(o => o.tipo === "Mensual");
-  const objectivesDone = objectivesMonth.filter(o => o.estado === "Completado").length;
-
-  viewRoot.innerHTML = `
-    <div class="grid grid-4" style="margin-bottom:22px;">
-      ${statCard("Tareas de hoy", tasksToday.length, tasksOverdue.length + " atrasadas")}
-      ${statCard("Contenido pendiente", contentPending.length, "por producir/publicar")}
-      ${statCard("Clientes activos", clientsActive.length, projectsActive.length + " proyectos activos")}
-      ${statCard("Ingresos del mes", fmtMoney(incomeThisMonth), "MRR: " + fmtMoney(mrr))}
-    </div>
-    <div class="grid grid-2">
-      <div class="card">
-        <div class="section-head"><h2>🔴 Tareas atrasadas y de hoy</h2></div>
-        ${renderMiniTaskList([...tasksOverdue, ...tasksToday])}
-      </div>
-      <div class="card">
-        <div class="section-head"><h2>🎯 Objetivos del mes</h2></div>
-        ${objectivesMonth.length ? `<p style="color:var(--text-mute); font-size:13px; margin-bottom:10px;">${objectivesDone}/${objectivesMonth.length} objetivos completados</p>` : ""}
-        ${renderMiniObjectives(objectivesMonth)}
-      </div>
-    </div>
-  `;
-}
 function statCard(label, value, note){
   return `<div class="card stat-card"><div class="stat-label">${label}</div><div class="stat-value">${value}</div><div class="stat-note">${note}</div></div>`;
 }
@@ -1042,114 +916,6 @@ function renderMiniObjectives(list){
       ${badgeHtml(o.estado)}
     </div>
   `).join("");
-}
-
-/* ---------- FINANZAS (vista combinada) ---------- */
-function renderFinance(){
-  const income = state.cache.finance_income || [];
-  const expense = state.cache.finance_expense || [];
-  const thisMonth = todayISO().slice(0,7);
-  const incomeMonth = income.filter(i=>(i.fecha||"").startsWith(thisMonth)).reduce((s,i)=>s+(Number(i.monto)||0),0);
-  const expenseMonth = expense.filter(i=>(i.fecha||"").startsWith(thisMonth)).reduce((s,i)=>s+(Number(i.monto)||0),0);
-  const pendingIncome = income.filter(i=>i.estado==="Pendiente").reduce((s,i)=>s+(Number(i.monto)||0),0);
-  const clientsActive = (state.cache.clients||[]).filter(c=>c.estado==="Activo");
-  const mrr = clientsActive.reduce((s,c)=>s+(Number(c.precioMensual)||0),0);
-
-  viewRoot.innerHTML = `
-    <div class="grid grid-4" style="margin-bottom:22px;">
-      ${statCard("Ingresos del mes", fmtMoney(incomeMonth), "")}
-      ${statCard("Gastos del mes", fmtMoney(expenseMonth), "")}
-      ${statCard("Utilidad del mes", fmtMoney(incomeMonth-expenseMonth), "")}
-      ${statCard("MRR", fmtMoney(mrr), pendingIncome ? ("Pendiente de cobro: " + fmtMoney(pendingIncome)) : "")}
-    </div>
-    <div class="section-head"><h2>💵 Ingresos</h2><button class="btn btn-primary" id="btn-add-income">+ Nuevo ingreso</button></div>
-    <div id="income-table-root" style="margin-bottom:26px;"></div>
-    <div class="section-head"><h2>💸 Gastos</h2><button class="btn btn-primary" id="btn-add-expense">+ Nuevo gasto</button></div>
-    <div id="expense-table-root"></div>
-  `;
-  document.getElementById("income-table-root").innerHTML = buildTable("finance_income", income);
-  document.getElementById("expense-table-root").innerHTML = buildTable("finance_expense", expense);
-  bindTableRowEvents("finance_income", document.getElementById("income-table-root"));
-  bindTableRowEvents("finance_expense", document.getElementById("expense-table-root"));
-  document.getElementById("btn-add-income").addEventListener("click", ()=>openModal("finance_income"));
-  document.getElementById("btn-add-expense").addEventListener("click", ()=>openModal("finance_expense"));
-}
-
-/* ---------- CONTENIDO (agenda agrupada por semana) ---------- */
-function weekInfo(dateStr){
-  if(!dateStr) return {key:"zzz-sin-fecha", label:"Sin fecha", order:9999999999999};
-  const d = new Date(dateStr + "T00:00:00");
-  if(isNaN(d)) return {key:"zzz-sin-fecha", label:"Sin fecha", order:9999999999999};
-  const day = d.getDay(); // 0=dom … 6=sáb
-  const diffToMonday = (day === 0 ? -6 : 1 - day);
-  const monday = new Date(d); monday.setDate(d.getDate() + diffToMonday);
-  const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
-  const key = monday.toISOString().slice(0,10);
-  const fmtShort = (dt) => dt.toLocaleDateString("es-HN", {day:"2-digit", month:"short"});
-  const sameMonth = monday.getMonth() === sunday.getMonth();
-  const label = sameMonth
-    ? `Semana del ${monday.getDate()} al ${fmtShort(sunday)}`
-    : `Semana del ${fmtShort(monday)} al ${fmtShort(sunday)}`;
-  return {key, label, order: monday.getTime()};
-}
-function fmtDateWeekday(d){
-  if(!d) return "—";
-  const dt = new Date(d + "T00:00:00");
-  if(isNaN(dt)) return d;
-  return dt.toLocaleDateString("es-HN", {weekday:"long", day:"2-digit", month:"short"});
-}
-function renderContent(){
-  const items = [...(state.cache.content||[])].sort((a,b)=>String(a.fechaPublicacion||"").localeCompare(String(b.fechaPublicacion||"")));
-  const groups = {};
-  items.forEach(it => {
-    const w = weekInfo(it.fechaPublicacion);
-    groups[w.key] = groups[w.key] || { label: w.label, order: w.order, items: [] };
-    groups[w.key].items.push(it);
-  });
-  const orderedKeys = Object.keys(groups).sort((a,b)=> groups[a].order - groups[b].order);
-  const typeIcon = {"Reel":"🎬","TikTok":"🎵","Post":"📸","Carrusel":"🖼️","Story":"⭕","Video":"📹","Campaña":"📣"};
-
-  viewRoot.innerHTML = `
-    <div class="section-head">
-      <h2>🎬 Agenda de contenido</h2>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button class="btn btn-ghost" id="btn-import-content">📥 Importar planificación mensual</button>
-        <button class="btn btn-primary" id="btn-add-content">+ Nuevo contenido</button>
-      </div>
-    </div>
-    <div id="content-groups">
-      ${orderedKeys.length ? orderedKeys.map(key => {
-        const group = groups[key];
-        return `
-        <div class="week-group">
-          <h4>📅 ${group.label}<span class="week-count">${group.items.length} pieza${group.items.length===1?"":"s"}</span></h4>
-          ${group.items.map(it => `
-            <div class="content-item">
-              <div style="display:flex; align-items:center; gap:12px; min-width:0;">
-                <span style="font-size:18px;">${typeIcon[it.tipo]||"🎬"}</span>
-                <div style="min-width:0;">
-                  <div style="font-weight:600;">${escapeHtml(it.tema||it.tipo||"")}</div>
-                  <div style="color:var(--text-mute); font-size:12px; margin-top:2px;">
-                    ${it.fechaPublicacion ? escapeHtml(fmtDateWeekday(it.fechaPublicacion)) + " · " : ""}${refLabel("clients", it.clienteId)} · ${it.tipo||""}${it.plataforma?(" · "+escapeHtml(it.plataforma)):""}
-                  </div>
-                  ${it.extraFinSemana ? `<div style="color:var(--yellow); font-size:11.5px; margin-top:3px;">⭐ Extra fin de semana: ${escapeHtml(it.extraFinSemana)}</div>` : ""}
-                </div>
-              </div>
-              <div style="display:flex; align-items:center; gap:8px; flex:0 0 auto;">
-                ${badgeHtml(it.estado)}
-                <button class="icon-btn" data-edit="${it.id}">✎</button>
-                <button class="icon-btn" data-del="${it.id}">🗑</button>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      `; }).join("") : emptyState("🎬","Sin contenido programado","Agrega tu primera pieza de contenido o importa tu planificación mensual para empezar la agenda.")}
-    </div>
-  `;
-  document.getElementById("btn-add-content").addEventListener("click", ()=>openModal("content"));
-  document.getElementById("btn-import-content").addEventListener("click", ()=>openImportModal());
-  document.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>openModal("content", b.dataset.edit)));
-  document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>confirmDelete("content", b.dataset.del)));
 }
 
 /* ---------- VISTA CRUD GENÉRICA (clientes, tareas, proyectos, docs, prospectos, servicios, cotizaciones, objetivos) ---------- */
@@ -1282,7 +1048,7 @@ function openModal(key, editId, prefill){
   }).join("");
 
   modalOverlay.style.display = "flex";
-  if(key === "sales") bindSalesAutoTotal();
+  if(key === "finance_income") bindSalesAutoTotal();
 }
 function closeModal(){ modalOverlay.style.display = "none"; modalForm.reset(); }
 document.getElementById("modal-close").addEventListener("click", closeModal);
@@ -1336,15 +1102,16 @@ const COMPANY = {
   marca: "Acapella Marketing",
   razonSocial: "B-Market",
   rtn: "02012001010084",
-  telefono: "+504 87995908",
-  correo: "acapellahn@gmail.com",
-  direccion: "Bo. El Centro, Trujillo, Colón",
+  telefono: "",
+  correo: "",
+  direccion: "",
   web: "",
 };
 const DEFAULT_CONDICIONES = "Precios expresados en Lempiras (L).\nCotización válida hasta la fecha de vigencia indicada.";
 const LOGO_SRC = document.querySelector('link[rel="icon"]')?.href || "";
 const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
+const pad2 = (n) => String(n).padStart(2, "0");
 const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
 const clientById = (id) => (state.cache.clients || []).find(c => c.id === id);
 const quoteById = (id) => (state.cache.quotes || []).find(q => q.id === id);
@@ -1430,13 +1197,13 @@ function bindQuoteRowActions(root){
 }
 function quoteToSale(q){
   const t = quoteTotals(q);
-  openModal("sales", null, {
+  openModal("finance_income", null, {
     fecha: todayISO(), clienteId: q.clienteId || "", concepto: "Cotización " + (q.numero || ""),
-    cotizacionNumero: q.numero || "", subtotal: round2(t.gravado + t.exento), isv: t.isv, total: t.total, estado: "Pendiente",
+    cotizacionNumero: q.numero || "", subtotal: round2(t.gravado + t.exento), isv: t.isv, monto: t.total, estado: "Pendiente",
   });
 }
 function bindSalesAutoTotal(){
-  const sub = modalForm.elements["subtotal"], isv = modalForm.elements["isv"], tot = modalForm.elements["total"];
+  const sub = modalForm.elements["subtotal"], isv = modalForm.elements["isv"], tot = modalForm.elements["monto"];
   if (!sub || !isv || !tot) return;
   const upd = () => { tot.value = round2((Number(sub.value) || 0) + (Number(isv.value) || 0)); };
   sub.addEventListener("input", upd);
@@ -1707,51 +1474,104 @@ function printQuote(q){
 }
 
 /* ------------------------- VENTAS Y GASTOS: REGISTRO MENSUAL ------------------------- */
+function monthlySummary(year){
+  const inc = state.cache.finance_income || [], exp = state.cache.finance_expense || [];
+  return MONTHS.map((m, i) => {
+    const p = year + "-" + pad2(i + 1);
+    const si = inc.filter(r => (r.fecha || "").startsWith(p)), se = exp.filter(r => (r.fecha || "").startsWith(p));
+    const v = sumOf(si, r => r.monto), isv = sumOf(si, r => r.isv), g = sumOf(se, r => r.monto);
+    return { p, m, v, isv, g, u: v - isv - g };
+  });
+}
+const negColor = (n, ok) => n < 0 ? "var(--danger)" : (ok || "var(--text)");
+function summaryTableHtml(summary, year, selected){
+  const yv = sumOf(summary, r => r.v), yi = sumOf(summary, r => r.isv), yg = sumOf(summary, r => r.g), yu = yv - yi - yg;
+  return `<div class="table-wrap"><table style="min-width:560px;">
+    <thead><tr><th>Mes</th><th>Ventas</th><th>ISV</th><th>Gastos</th><th>Utilidad neta</th></tr></thead>
+    <tbody>
+      ${summary.map(r => `<tr class="month-row ${r.p === selected ? "sel" : ""}" data-month="${r.p}">
+        <td>${r.m}</td><td>${fmtMoney(r.v)}</td><td>${fmtMoney(r.isv)}</td><td>${fmtMoney(r.g)}</td>
+        <td style="color:${negColor(r.u)};">${fmtMoney(r.u)}</td></tr>`).join("")}
+      <tr class="sum-total"><td>Total ${year}</td><td>${fmtMoney(yv)}</td><td>${fmtMoney(yi)}</td><td>${fmtMoney(yg)}</td>
+        <td style="color:${negColor(yu, "var(--yellow)")};">${fmtMoney(yu)}</td></tr>
+    </tbody></table></div>`;
+}
+
+function renderDashboard(){
+  const today = todayISO(), year = today.slice(0, 4), mi = Number(today.slice(5, 7)) - 1;
+  const tasks = state.cache.tasks || [];
+  const tasksToday = tasks.filter(t => t.deadline === today && t.estado !== "Completada");
+  const tasksOverdue = tasks.filter(t => t.deadline && t.deadline < today && t.estado !== "Completada");
+  const clientsActive = (state.cache.clients || []).filter(c => c.estado === "Activo");
+  const projectsActive = (state.cache.projects || []).filter(p => p.estado === "Activo");
+  const summary = monthlySummary(year), cur = summary[mi];
+  const yu = sumOf(summary, r => r.u);
+  const pending = sumOf((state.cache.finance_income || []).filter(r => r.estado === "Pendiente"), r => r.monto);
+  const mrr = sumOf(clientsActive, c => c.precioMensual);
+  const colored = (v, n) => `<span style="color:${negColor(n, "var(--text)")};">${v}</span>`;
+
+  viewRoot.innerHTML = `
+    <div class="grid grid-4" style="margin-bottom:16px;">
+      ${statCard("Ventas del mes", fmtMoney(cur.v), "ISV incluido: " + fmtMoney(cur.isv))}
+      ${statCard("Gastos del mes", fmtMoney(cur.g), monthLabel(year + "-" + pad2(mi + 1)))}
+      ${statCard("Utilidad neta del mes", colored(fmtMoney(cur.u), cur.u), "ventas sin ISV − gastos")}
+      ${statCard("Utilidad neta " + year, colored(fmtMoney(yu), yu), "acumulado del año")}
+    </div>
+    <div class="grid grid-4" style="margin-bottom:22px;">
+      ${statCard("Tareas de hoy", tasksToday.length, tasksOverdue.length + " atrasadas")}
+      ${statCard("Clientes activos", clientsActive.length, projectsActive.length + " proyectos activos")}
+      ${statCard("Por cobrar", fmtMoney(pending), "ventas pendientes de pago")}
+      ${statCard("MRR", fmtMoney(mrr), "mensualidades de clientes activos")}
+    </div>
+    <div class="card" style="margin-bottom:22px;">
+      <div class="section-head"><h2>📆 Resumen mensual ${year}</h2></div>
+      ${summaryTableHtml(summary, year, year + "-" + pad2(mi + 1))}
+    </div>
+    <div class="card">
+      <div class="section-head"><h2>🔴 Tareas atrasadas y de hoy</h2></div>
+      ${renderMiniTaskList([...tasksOverdue, ...tasksToday])}
+    </div>`;
+  viewRoot.querySelectorAll(".month-row").forEach(tr => tr.addEventListener("click", () => { state.filters.ledgerMonth = tr.dataset.month; navigateTo("sales"); }));
+}
+
 function renderLedger(kind){
   const isSales = kind === "sales";
-  const key = isSales ? "sales" : "finance_expense";
-  const all = state.cache[SCHEMAS[key].collection] || [];
-  const amt = (r) => Number(isSales ? r.total : r.monto) || 0;
-  const month = state.filters.ledgerMonth || todayISO().slice(0, 7);
+  const key = isSales ? "finance_income" : "finance_expense";
+  const all = state.cache[key] || [];
+  const incAll = state.cache.finance_income || [], expAll = state.cache.finance_expense || [];
+  const month = state.filters.ledgerMonth || "all";
   const isAll = month === "all";
-  const year = isAll ? todayISO().slice(0, 4) : month.slice(0, 4);
+  const years = [...new Set([...incAll, ...expAll].map(r => (r.fecha || "").slice(0, 4)).filter(y => /^\d{4}$/.test(y)).concat([todayISO().slice(0, 4)]))].sort();
+  const year = isAll ? (state.filters.ledgerYear || todayISO().slice(0, 4)) : month.slice(0, 4);
   const inPeriod = (r) => isAll || (r.fecha || "").startsWith(month);
   const rows = all.filter(inPeriod).sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")));
   const periodLabel = isAll ? "todo el registro" : monthLabel(month);
-  const total = sumOf(rows, amt);
-
-  const salesAll = state.cache.sales || [];
-  const expAll = state.cache.finance_expense || [];
-  const periodSales = sumOf(salesAll.filter(inPeriod), r => r.total);
-  const periodExp = sumOf(expAll.filter(inPeriod), r => r.monto);
+  const total = sumOf(rows, r => r.monto);
+  const undated = all.filter(r => !r.fecha).length;
+  const pSales = incAll.filter(inPeriod), pExp = expAll.filter(inPeriod);
+  const netSales = sumOf(pSales, r => r.monto) - sumOf(pSales, r => r.isv);
 
   let stats;
   if (isSales) {
     stats = [
       statCard("Ventas", fmtMoney(total), `${rows.length} venta${rows.length === 1 ? "" : "s"} · ${periodLabel}`),
       statCard("ISV facturado", fmtMoney(sumOf(rows, r => r.isv)), "incluido en el total"),
-      statCard("Cobrado", fmtMoney(sumOf(rows.filter(r => r.estado === "Pagado"), r => r.total)), ""),
-      statCard("Por cobrar", fmtMoney(sumOf(rows.filter(r => r.estado === "Pendiente"), r => r.total)), ""),
+      statCard("Cobrado", fmtMoney(sumOf(rows.filter(r => r.estado === "Pagado"), r => r.monto)), ""),
+      statCard("Por cobrar", fmtMoney(sumOf(rows.filter(r => r.estado === "Pendiente"), r => r.monto)), ""),
     ];
   } else {
     const byCat = {};
-    rows.forEach(r => { const k = (r.categoria || "Sin categoría").trim() || "Sin categoría"; byCat[k] = (byCat[k] || 0) + amt(r); });
+    rows.forEach(r => { const k = (r.categoria || "Sin categoría").trim() || "Sin categoría"; byCat[k] = (byCat[k] || 0) + (Number(r.monto) || 0); });
     const top = Object.entries(byCat).sort((a, b) => b[1] - a[1])[0];
+    const u = netSales - sumOf(pExp, r => r.monto);
     stats = [
       statCard("Gastos", fmtMoney(total), `${rows.length} registro${rows.length === 1 ? "" : "s"} · ${periodLabel}`),
-      statCard("Ventas del periodo", fmtMoney(periodSales), ""),
-      statCard("Resultado", fmtMoney(periodSales - periodExp), "ventas − gastos"),
+      statCard("Ventas sin ISV", fmtMoney(netSales), periodLabel),
+      statCard("Utilidad neta", `<span style="color:${negColor(u)};">${fmtMoney(u)}</span>`, "ventas sin ISV − gastos"),
       statCard("Mayor categoría", top ? escapeHtml(top[0]) : "—", top ? fmtMoney(top[1]) : ""),
     ];
   }
-
-  const summary = MONTHS.map((m, i) => {
-    const p = year + "-" + pad2(i + 1);
-    const v = sumOf(salesAll.filter(r => (r.fecha || "").startsWith(p)), r => r.total);
-    const g = sumOf(expAll.filter(r => (r.fecha || "").startsWith(p)), r => r.monto);
-    return { p, m, v, g, u: v - g };
-  });
-  const yv = sumOf(summary, r => r.v), yg = sumOf(summary, r => r.g);
+  const summary = monthlySummary(year);
 
   viewRoot.innerHTML = `
     <div class="section-head">
@@ -1762,26 +1582,22 @@ function renderLedger(kind){
       <label style="color:var(--text-mute); font-size:12.5px;">Mes</label>
       <input type="month" id="ledger-month" value="${isAll ? "" : month}" />
       <button class="filter-tab ${isAll ? "active" : ""}" id="ledger-all">Ver todo</button>
+      ${isAll ? `<label style="color:var(--text-mute); font-size:12.5px; margin-left:8px;">Año del resumen</label>
+        <select id="ledger-year">${years.map(y => `<option ${y === year ? "selected" : ""}>${y}</option>`).join("")}</select>` : ""}
     </div>
+    ${(!isAll && undated) ? `<div class="q-hint" style="margin:-6px 0 12px;">⚠ Hay ${undated} registro(s) sin fecha; solo aparecen en "Ver todo". Edítalos para asignarles fecha.</div>` : ""}
     <div class="grid grid-4" style="margin-bottom:20px;">${stats.join("")}</div>
     <div id="ledger-table-root" style="margin-bottom:28px;"></div>
     <div class="section-head"><h2 style="font-size:15px;">📆 Resumen mensual ${year}</h2></div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Mes</th><th>Ventas</th><th>Gastos</th><th>Utilidad</th></tr></thead>
-      <tbody>
-        ${summary.map(r => `<tr class="month-row ${r.p === month ? "sel" : ""}" data-month="${r.p}">
-          <td>${r.m}</td><td>${fmtMoney(r.v)}</td><td>${fmtMoney(r.g)}</td>
-          <td style="color:${r.u < 0 ? "var(--danger)" : "var(--text)"};">${fmtMoney(r.u)}</td></tr>`).join("")}
-        <tr class="sum-total"><td>Total ${year}</td><td>${fmtMoney(yv)}</td><td>${fmtMoney(yg)}</td>
-          <td style="color:${yv - yg < 0 ? "var(--danger)" : "var(--yellow)"};">${fmtMoney(yv - yg)}</td></tr>
-      </tbody></table></div>`;
+    ${summaryTableHtml(summary, year, month)}`;
 
   const tableRoot = byId("ledger-table-root");
   tableRoot.innerHTML = buildTable(key, rows);
   bindTableRowEvents(key, tableRoot);
   byId("btn-ledger-add").addEventListener("click", () => openModal(key, null, { fecha: todayISO() }));
-  byId("ledger-month").addEventListener("change", (e) => { state.filters.ledgerMonth = e.target.value || todayISO().slice(0, 7); render(); });
+  byId("ledger-month").addEventListener("change", (e) => { state.filters.ledgerMonth = e.target.value || "all"; render(); });
   byId("ledger-all").addEventListener("click", () => { state.filters.ledgerMonth = isAll ? todayISO().slice(0, 7) : "all"; render(); });
+  const ys = byId("ledger-year"); if (ys) ys.addEventListener("change", (e) => { state.filters.ledgerYear = e.target.value; render(); });
   viewRoot.querySelectorAll(".month-row").forEach(tr => tr.addEventListener("click", () => { state.filters.ledgerMonth = tr.dataset.month; render(); }));
 }
 
@@ -1796,7 +1612,7 @@ function renderProfile(){
   const c = clientById(state.profileId);
   if (!c) { closeProfile(); return; }
   const quotes = (state.cache.quotes || []).filter(q => q.clienteId === c.id).sort((a, b) => String(b.numero || "").localeCompare(String(a.numero || "")));
-  const sales = (state.cache.sales || []).filter(s => s.clienteId === c.id).sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")));
+  const sales = (state.cache.finance_income || []).filter(s => s.clienteId === c.id).sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")));
   const missing = [];
   if (!c.rtn) missing.push("RTN"); if (!c.razonSocial) missing.push("razón social"); if (!c.direccion) missing.push("dirección");
   const row = (k, v) => `<div class="p-row"><span class="k">${k}</span><span class="v">${v ? escapeHtml(v) : "—"}</span></div>`;
@@ -1820,8 +1636,8 @@ function renderProfile(){
     ${missing.length ? `<div class="q-hint" style="margin:-6px 0 14px;">⚠ Perfil incompleto: falta ${missing.join(", ")}.</div>` : ""}
     <div class="p-stats">
       ${statCard("Cotizado", fmtMoney(sumOf(quotes, q => q.total)), quotes.length + " cotización(es)")}
-      ${statCard("Vendido", fmtMoney(sumOf(sales, s => s.total)), sales.length + " venta(s)")}
-      ${statCard("Por cobrar", fmtMoney(sumOf(sales.filter(s => s.estado === "Pendiente"), s => s.total)), "")}
+      ${statCard("Vendido", fmtMoney(sumOf(sales, s => s.monto)), sales.length + " venta(s)")}
+      ${statCard("Por cobrar", fmtMoney(sumOf(sales.filter(s => s.estado === "Pendiente"), s => s.monto)), "")}
       ${statCard("Mensualidad", fmtMoney(c.precioMensual), c.diaPago ? "pago el día " + c.diaPago : "")}
     </div>
     <div class="p-grid">
@@ -1845,7 +1661,7 @@ function renderProfile(){
     <div class="p-sub">🧾 Ventas</div>
     ${sales.length ? `<div class="table-wrap"><table>
       <thead><tr><th>Fecha</th><th>Concepto</th><th>Total</th><th>Estado</th></tr></thead>
-      <tbody>${sales.map(s => `<tr><td>${fmtDate(s.fecha)}</td><td>${escapeHtml(s.concepto || "")}</td><td>${fmtMoney(s.total)}</td><td>${badgeHtml(s.estado)}</td></tr>`).join("")}</tbody></table></div>`
+      <tbody>${sales.map(s => `<tr><td>${fmtDate(s.fecha)}</td><td>${escapeHtml(s.concepto || "")}</td><td>${fmtMoney(s.monto)}</td><td>${badgeHtml(s.estado)}</td></tr>`).join("")}</tbody></table></div>`
       : `<div class="table-wrap"><div class="empty-state" style="padding:26px;"><p style="margin:0;">Sin ventas registradas.</p></div></div>`}
   `;
   byId("pf-close").addEventListener("click", closeProfile);
@@ -1854,221 +1670,7 @@ function renderProfile(){
   bindQuoteRowActions(profileModal);
 }
 
-/* ===================== IMPORTAR PLANIFICACIÓN MENSUAL ===================== */
-const importOverlay = document.getElementById("import-overlay");
-const importFile = document.getElementById("import-file");
-const importPaste = document.getElementById("import-paste");
-const importPreview = document.getElementById("import-preview");
-const importConfirm = document.getElementById("import-confirm");
-let importParsedRows = [];
 
-const CONTENT_FORMATS = ["Reel","TikTok","Post","Carrusel","Story","Video","Campaña"];
-
-function normalizeStr(s){
-  return String(s ?? "")
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase().trim();
-}
-function pad2(n){ return String(n).padStart(2,"0"); }
-
-function parseDelimitedText(text){
-  const firstLine = (text.split(/\r?\n/)[0] || "");
-  const delim = firstLine.split("\t").length > firstLine.split(",").length ? "\t" : ",";
-  const rows = []; let row = [], field = "", inQuotes = false;
-  for(let i=0;i<text.length;i++){
-    const c = text[i];
-    if(inQuotes){
-      if(c === '"'){ if(text[i+1] === '"'){ field += '"'; i++; } else inQuotes = false; }
-      else field += c;
-    } else {
-      if(c === '"') inQuotes = true;
-      else if(c === delim){ row.push(field); field=""; }
-      else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=""; }
-      else if(c === '\r'){ /* ignore */ }
-      else field += c;
-    }
-  }
-  if(field.length || row.length){ row.push(field); rows.push(row); }
-  return rows.filter(r => r.some(c => String(c).trim() !== ""));
-}
-
-function parseFlexibleDate(raw){
-  if(!raw) return null;
-  const s = String(raw).trim();
-  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-  if(m) return `${m[1]}-${pad2(m[2])}-${pad2(m[3])}`;
-  m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
-  if(m){
-    let [, d, mo, y] = m;
-    if(y.length === 2) y = (Number(y) < 70 ? "20" : "19") + y;
-    return `${y}-${pad2(mo)}-${pad2(d)}`;
-  }
-  return null;
-}
-function matchClient(raw){
-  const n = normalizeStr(raw);
-  if(!n) return { id:null, label:null };
-  const clients = state.cache.clients || [];
-  let found = clients.find(c => normalizeStr(c.nombre) === n || normalizeStr(c.empresa) === n);
-  if(!found) found = clients.find(c =>
-    (c.nombre && normalizeStr(c.nombre).includes(n)) || (n.includes(normalizeStr(c.nombre))) ||
-    (c.empresa && normalizeStr(c.empresa).includes(n)) || (n.includes(normalizeStr(c.empresa)))
-  );
-  return found ? { id: found.id, label: found.nombre || found.empresa } : { id:null, label:null };
-}
-function matchFormat(raw){
-  const n = normalizeStr(raw);
-  const found = CONTENT_FORMATS.find(o => normalizeStr(o) === n);
-  return found || String(raw || "").trim();
-}
-
-const HEADER_MATCHERS = {
-  cliente: h => h.includes("cliente"),
-  fecha: h => (h.includes("dia") && h.includes("public")) || h.includes("fecha"),
-  formato: h => h.includes("formato"),
-  idea: h => h.includes("idea"),
-  copy: h => h.includes("copy"),
-  extra: h => h.includes("extra"),
-};
-function detectColumns(headerRow){
-  const norm = headerRow.map(normalizeStr);
-  const map = {};
-  Object.keys(HEADER_MATCHERS).forEach(key => {
-    const idx = norm.findIndex(HEADER_MATCHERS[key]);
-    if(idx !== -1) map[key] = idx;
-  });
-  return map;
-}
-
-function processImportText(text){
-  const rows = parseDelimitedText(text);
-  if(!rows.length){ importParsedRows = []; renderImportPreview(); return; }
-
-  const detected = detectColumns(rows[0]);
-  const hasHeader = Object.keys(detected).length >= 3;
-  const colMap = hasHeader ? detected : {cliente:0, fecha:1, formato:2, idea:3, copy:4, extra:5};
-  const dataRows = hasHeader ? rows.slice(1) : rows;
-
-  importParsedRows = dataRows.map(r => {
-    const get = (key) => colMap[key] !== undefined ? (r[colMap[key]] || "").trim() : "";
-    const clienteRaw = get("cliente");
-    const fechaRaw = get("fecha");
-    const formatoRaw = get("formato");
-    const idea = get("idea");
-    const copy = get("copy");
-    const extra = get("extra");
-
-    const clientMatch = matchClient(clienteRaw);
-    const fecha = parseFlexibleDate(fechaRaw);
-    const formato = matchFormat(formatoRaw);
-
-    const warnings = [];
-    if(clienteRaw && !clientMatch.id) warnings.push("Cliente no encontrado");
-    if(fechaRaw && !fecha) warnings.push("Fecha no reconocida");
-    if(!idea && !copy) warnings.push("Sin idea ni copy");
-
-    return {
-      clienteRaw, clienteId: clientMatch.id, clienteLabel: clientMatch.label || clienteRaw,
-      fechaRaw, fecha, formatoRaw, formato, idea, copy, extra, warnings
-    };
-  }).filter(row => row.clienteRaw || row.fechaRaw || row.idea || row.copy || row.formatoRaw);
-
-  renderImportPreview();
-}
-
-function renderImportPreview(){
-  if(!importParsedRows.length){
-    importPreview.innerHTML = "";
-    importConfirm.disabled = true;
-    return;
-  }
-  const warnCount = importParsedRows.filter(r => r.warnings.length).length;
-  const okCount = importParsedRows.length - warnCount;
-  importPreview.innerHTML = `
-    <div class="import-summary">
-      <span class="import-chip ok">${importParsedRows.length} fila${importParsedRows.length===1?"":"s"} detectada${importParsedRows.length===1?"":"s"}</span>
-      ${warnCount ? `<span class="import-chip warn">⚠ ${warnCount} con advertencias (se importan igual, revisa después)</span>` : `<span class="import-chip ok">✓ todo listo</span>`}
-    </div>
-    <div class="import-preview-table">
-      <table>
-        <thead><tr><th>Cliente</th><th>Fecha</th><th>Formato</th><th>Idea</th><th>Extra finde</th></tr></thead>
-        <tbody>
-          ${importParsedRows.slice(0,50).map(r => `
-            <tr class="${r.warnings.length ? "row-warn" : ""}" title="${r.warnings.join(", ")}">
-              <td>${escapeHtml(r.clienteLabel || "—")}</td>
-              <td>${r.fecha ? fmtDate(r.fecha) : (r.fechaRaw || "—")}</td>
-              <td>${escapeHtml(r.formato || "—")}</td>
-              <td>${escapeHtml(r.idea || "—")}</td>
-              <td>${escapeHtml(r.extra || "—")}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    </div>
-  `;
-  importConfirm.disabled = false;
-}
-
-function openImportModal(){
-  importFile.value = "";
-  importPaste.value = "";
-  importParsedRows = [];
-  importPreview.innerHTML = "";
-  importConfirm.disabled = true;
-  importOverlay.style.display = "flex";
-}
-function closeImportModal(){ importOverlay.style.display = "none"; }
-document.getElementById("import-close").addEventListener("click", closeImportModal);
-document.getElementById("import-cancel").addEventListener("click", closeImportModal);
-importOverlay.addEventListener("click", (e) => { if(e.target === importOverlay) closeImportModal(); });
-
-importFile.addEventListener("change", () => {
-  const file = importFile.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    importPaste.value = e.target.result;
-    processImportText(e.target.result);
-  };
-  reader.readAsText(file, "UTF-8");
-});
-importPaste.addEventListener("input", () => processImportText(importPaste.value));
-
-importConfirm.addEventListener("click", async () => {
-  if(!importParsedRows.length) return;
-  importConfirm.disabled = true;
-  importConfirm.innerHTML = '<span class="loader"></span>';
-  try {
-    let ok = 0, failed = 0;
-    for(const row of importParsedRows){
-      const data = {
-        clienteId: row.clienteId || "",
-        tipo: row.formato || "",
-        plataforma: "",
-        tema: row.idea || (row.clienteId ? "" : `[${row.clienteRaw}] ${row.idea||""}`.trim()),
-        copy: row.copy || "",
-        fechaPublicacion: row.fecha || "",
-        estado: "Idea",
-        archivoUrl: "",
-        responsable: "",
-        extraFinSemana: row.extra || "",
-        creadoEn: serverTimestamp(),
-      };
-      try {
-        await addDoc(collection(db, "content"), data);
-        ok++;
-      } catch(err){
-        console.error(err);
-        failed++;
-      }
-    }
-    toast(`Importación completa: ${ok} pieza${ok===1?"":"s"} agregada${ok===1?"":"s"}${failed?` · ${failed} con error`:""}.`, failed>0 && ok===0);
-    closeImportModal();
-  } finally {
-    importConfirm.disabled = false;
-    importConfirm.textContent = "Importar";
-  }
-});
 </script>
 
 </body>
