@@ -306,6 +306,129 @@
     .content{ padding:18px; }
     .topbar{ padding:14px 18px; }
   }
+
+  /* ================= VENTAS · COTIZACIONES · PERFIL ================= */
+  .modal.wide{ max-width:980px; }
+  #profile-overlay{ z-index:45; }
+  #quote-overlay{ z-index:46; }
+
+  .q-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:14px; }
+  .q-client-card{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px 18px;
+    background:var(--panel-2); border:1px solid var(--line); border-left:3px solid var(--yellow);
+    border-radius:10px; padding:12px 14px;
+  }
+  .q-client-card .k, .p-row .k{ display:block; font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--text-mute); }
+  .q-client-card .v, .p-row .v{ display:block; font-size:13px; font-weight:500; word-break:break-word; }
+  .q-hint{ color:var(--warn); font-size:12px; margin-top:8px; }
+  .q-add{ display:flex; gap:8px; flex-wrap:wrap; }
+  .q-add select{
+    background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    border-radius:8px; padding:8px 10px; font-size:12.5px; max-width:230px; outline:none;
+  }
+  .q-items{ min-width:760px; }
+  .q-items thead th{ padding:10px 8px; }
+  .q-items td{ padding:8px; }
+  .q-in{
+    width:100%; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    border-radius:7px; padding:8px 9px; font-size:13px; outline:none;
+  }
+  .q-in:focus{ border-color:var(--yellow); }
+  textarea.q-in{ resize:vertical; min-height:38px; }
+  .q-amt{ text-align:right; white-space:nowrap; font-weight:600; }
+  .q-bottom{ display:grid; grid-template-columns:1fr 300px; gap:18px; margin-top:16px; align-items:start; }
+  .q-totals{ background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:8px 16px; }
+  .q-totals .row{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  .q-totals .row span:first-child{ color:var(--text-mute); }
+  .q-totals .row.total{ border:none; font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--yellow); }
+  .q-totals .row.total span:first-child{ color:var(--yellow); }
+
+  .p-head{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:18px; }
+  .p-id{ display:flex; align-items:center; gap:14px; min-width:0; }
+  .p-avatar{
+    width:52px; height:52px; border-radius:14px; background:var(--yellow); color:#121212;
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:20px; flex:0 0 auto;
+  }
+  .p-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }
+  .p-card{ background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .p-card h4{ font-family:var(--font-display); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--yellow); margin-bottom:10px; }
+  .p-row{ margin-bottom:9px; }
+  .p-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+  .p-stats .card{ padding:14px 16px; }
+  .p-stats .stat-value{ font-size:19px; }
+  .p-sub{ font-family:var(--font-display); font-size:14px; margin:18px 0 10px; }
+  .month-row{ cursor:pointer; }
+  .month-row.sel td{ background:var(--yellow-soft); }
+  .month-row.sel td:first-child{ color:var(--yellow); font-weight:600; }
+  tr.sum-total td{ font-weight:700; border-top:1px solid var(--yellow); }
+  @media (max-width: 860px){
+    .q-grid, .q-bottom, .p-grid{ grid-template-columns:1fr; }
+    .q-client-card{ grid-template-columns:1fr 1fr; }
+    .p-stats{ grid-template-columns:1fr 1fr; }
+  }
+
+  /* ================= IMPRESIÓN DE COTIZACIÓN ================= */
+  #print-root{ display:none; }
+  .qp, .qp *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; box-sizing:border-box; }
+  .qp{ font-family:'Inter',Arial,sans-serif; color:#121212; font-size:11.5px; line-height:1.45; background:#fff; }
+  .qp-head{
+    background:#121212; color:#fff; padding:18px 22px; border-bottom:5px solid #FDCE25;
+    display:flex; justify-content:space-between; align-items:center; gap:20px;
+  }
+  .qp-brand{ display:flex; align-items:center; gap:14px; }
+  .qp-logo{ width:64px; height:64px; border-radius:12px; display:block; }
+  .qp-brand-name{ font-family:'Space Grotesk',Arial,sans-serif; font-weight:700; font-size:20px; letter-spacing:.06em; color:#fff; }
+  .qp-brand-name span{ color:#FDCE25; }
+  .qp-brand-sub{ font-size:10.5px; color:#d6d1c4; margin-top:2px; }
+  .qp-doc{ text-align:right; }
+  .qp-doc-title{ font-family:'Space Grotesk',Arial,sans-serif; font-weight:700; font-size:24px; letter-spacing:.12em; color:#FDCE25; }
+  .qp-doc-num{ font-size:14px; font-weight:700; margin-top:2px; color:#fff; }
+  .qp-doc-meta{ font-size:10.5px; color:#d6d1c4; margin-top:4px; }
+  .qp-title{
+    font-family:'Space Grotesk',Arial,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; margin:20px 0 8px; display:flex; align-items:center; gap:8px; color:#121212;
+  }
+  .qp-title::before{ content:""; width:18px; height:4px; background:#FDCE25; display:block; }
+  .qp-client{
+    border:1px solid #e3dfd2; border-left:5px solid #FDCE25; border-radius:4px; padding:12px 14px;
+    display:grid; grid-template-columns:1fr 1fr; gap:8px 26px;
+  }
+  .qp-client .k{ font-size:8.5px; text-transform:uppercase; letter-spacing:.09em; color:#7a766b; }
+  .qp-client .v{ font-weight:600; font-size:11.5px; word-break:break-word; }
+  table.qp-table{ width:100%; border-collapse:collapse; margin-top:2px; }
+  .qp-table thead th{
+    background:#121212; color:#FDCE25; font-size:9px; text-transform:uppercase; letter-spacing:.08em;
+    padding:8px 10px; text-align:left; border:none;
+  }
+  .qp-table tbody td{ padding:9px 10px; border-bottom:1px solid #e3dfd2; font-size:11.5px; vertical-align:top; }
+  .qp-table tbody tr{ page-break-inside:avoid; }
+  .qp-table tbody tr:hover{ background:transparent; }
+  .qp-table .r{ text-align:right; white-space:nowrap; }
+  .qp-table .c{ text-align:center; white-space:nowrap; }
+  .qp-table .desc{ white-space:pre-line; }
+  .qp-tag{ display:inline-block; font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; background:#FDCE25; color:#121212; }
+  .qp-tag.ex{ background:#ece9de; color:#5f5b50; }
+  .qp-totals{ margin-left:auto; width:290px; margin-top:12px; page-break-inside:avoid; }
+  .qp-totals .row{ display:flex; justify-content:space-between; padding:6px 10px; border-bottom:1px solid #e3dfd2; font-size:11.5px; }
+  .qp-totals .row.total{
+    background:#121212; color:#FDCE25; font-family:'Space Grotesk',Arial,sans-serif; font-weight:700; font-size:14px;
+    border:none; margin-top:4px; padding:9px 10px;
+  }
+  .qp-cond{ border:1px solid #e3dfd2; border-radius:4px; padding:10px 14px; white-space:pre-line; font-size:10.5px; color:#3b3830; page-break-inside:avoid; }
+  .qp-sign{ display:flex; justify-content:space-between; gap:40px; margin-top:46px; page-break-inside:avoid; }
+  .qp-sign div{ flex:1; border-top:1px solid #121212; padding-top:5px; text-align:center; font-size:9.5px; color:#5f5b50; }
+  .qp-foot{
+    margin-top:22px; border-top:3px solid #FDCE25; padding-top:8px; text-align:center;
+    font-size:9.5px; color:#5f5b50; page-break-inside:avoid;
+  }
+  .qp-foot strong{ color:#121212; }
+
+  @media print{
+    @page{ size:letter; margin:10mm; }
+    html, body{ height:auto !important; background:#fff !important; color:#121212 !important; }
+    body > *:not(#print-root){ display:none !important; }
+    #print-root{ display:block !important; }
+  }
 </style>
 </head>
 <body>
@@ -409,6 +532,10 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="profile-overlay"><div class="modal wide" id="profile-modal"></div></div>
+<div class="modal-overlay" id="quote-overlay"><div class="modal wide" id="quote-modal"></div></div>
+<div id="print-root"></div>
+
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <script type="module">
@@ -472,7 +599,7 @@ const fmtDate = (d) => {
   if (isNaN(dt)) return d;
   return dt.toLocaleDateString("es-HN", {day:"2-digit", month:"short", year:"numeric"});
 };
-const todayISO = () => new Date().toISOString().slice(0,10);
+const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 
 const SUCCESS_VALUES = ["Activo","Completada","Completado","Pagado","Aprobado","Publicado","Ganado","Aceptada"];
 const WARN_VALUES = ["Pendiente","En proceso","En revisión","Producción","Diseño","Revisión","Programado","Contactado","Conversación","Propuesta","Negociación","Borrador","Enviada","En progreso"];
@@ -515,6 +642,11 @@ const SCHEMAS = {
     fields: [
       {key:"nombre", label:"Nombre", type:"text", required:true},
       {key:"empresa", label:"Empresa", type:"text"},
+      {key:"razonSocial", label:"Razón social", type:"text"},
+      {key:"rtn", label:"RTN", type:"text"},
+      {key:"giro", label:"Giro / rubro", type:"text"},
+      {key:"ciudad", label:"Ciudad", type:"text"},
+      {key:"direccion", label:"Dirección", type:"text", full:true},
       {key:"contacto", label:"Contacto", type:"text"},
       {key:"telefono", label:"Teléfono", type:"text"},
       {key:"correo", label:"Correo", type:"text"},
@@ -595,6 +727,8 @@ const SCHEMAS = {
       {key:"categoria", label:"Categoría", type:"text"},
       {key:"monto", label:"Monto (L)", type:"number", required:true},
       {key:"fecha", label:"Fecha", type:"date"},
+      {key:"proveedor", label:"Proveedor", type:"text"},
+      {key:"metodoPago", label:"Método de pago", type:"select", options:["Efectivo","Transferencia","Depósito","Cheque","Tarjeta","Otro"]},
     ]
   },
   documents: {
@@ -664,6 +798,36 @@ const SCHEMAS = {
       {key:"estado", label:"Estado", type:"select", options:["En progreso","Completado"], default:"En progreso"},
     ]
   },
+  products: {
+    label: "Productos", singular: "Producto", icon: "🛒", collection: "products",
+    orderBy: "nombre",
+    columns: ["nombre","categoria","precio","aplicaISV"],
+    fields: [
+      {key:"nombre", label:"Nombre del producto", type:"text", required:true, full:true},
+      {key:"categoria", label:"Categoría", type:"text"},
+      {key:"unidad", label:"Unidad (pieza, hora, mes…)", type:"text"},
+      {key:"precio", label:"Precio unitario sin ISV (L)", type:"number", required:true},
+      {key:"aplicaISV", label:"ISV", type:"select", options:["Con ISV (15%)","Sin ISV (exento)"], default:"Con ISV (15%)", required:true},
+      {key:"descripcion", label:"Descripción", type:"textarea", full:true},
+    ]
+  },
+  sales: {
+    label: "Ventas", singular: "Venta", icon: "🧾", collection: "sales",
+    orderBy: "fecha",
+    columns: ["fecha","clienteId","concepto","isv","total","estado"],
+    fields: [
+      {key:"fecha", label:"Fecha", type:"date", required:true},
+      {key:"clienteId", label:"Cliente", type:"select-ref", ref:"clients"},
+      {key:"concepto", label:"Concepto", type:"text", required:true, full:true},
+      {key:"cotizacionNumero", label:"No. de cotización (opcional)", type:"text"},
+      {key:"metodoPago", label:"Método de pago", type:"select", options:["Efectivo","Transferencia","Depósito","Cheque","Tarjeta","Otro"]},
+      {key:"subtotal", label:"Subtotal sin ISV (L)", type:"number", required:true},
+      {key:"isv", label:"ISV (L)", type:"number"},
+      {key:"total", label:"Total (L)", type:"number", required:true},
+      {key:"estado", label:"Estado de pago", type:"select", options:["Pagado","Pendiente"], default:"Pagado"},
+      {key:"notas", label:"Notas", type:"textarea", full:true},
+    ]
+  },
 };
 
 const NAV = [
@@ -677,6 +841,9 @@ const NAV = [
   {view:"prospects", label:"Prospectos / CRM", icon:"🧲"},
   {view:"services", label:"Servicios y Paquetes", icon:"📦"},
   {view:"quotes", label:"Cotizaciones", icon:"📑"},
+  {view:"products", label:"Productos", icon:"🛒"},
+  {view:"sales", label:"Ventas", icon:"🧾"},
+  {view:"expenses", label:"Gastos", icon:"💸"},
   {view:"objectives", label:"Objetivos", icon:"🎯"},
 ];
 
@@ -739,7 +906,7 @@ function startListeners(){
         return String(av).localeCompare(String(bv));
       });
       state.cache[schema.collection] = rows;
-      if (state.view === schema.collection || state.view === "dashboard" || state.view === "finance") {
+      if (state.view === schema.collection || ["dashboard","finance","sales","expenses","quotes","clients"].includes(state.view) || state.profileId) {
         render();
       }
     }, (err) => {
@@ -791,9 +958,14 @@ const viewRoot = document.getElementById("view-root");
 const titleMap = {
   dashboard:["Dashboard","El centro de mando de Acapella"],
   finance:["Finanzas","Ingresos, gastos e ingreso recurrente mensual"],
+  quotes:["Cotizaciones","Cotizaciones imprimibles con ISV, ligadas al perfil del cliente"],
+  sales:["Ventas","Registro de ventas por mes"],
+  expenses:["Gastos","Registro de gastos por mes"],
+  products:["Productos","Catálogo de productos con y sin ISV"],
 };
 
-function render(){
+function render(){ renderMain(); if(state.profileId) renderProfile(); }
+function renderMain(){
   const [title, sub] = titleMap[state.view] || [SCHEMAS[state.view]?.label, "Gestiona tus " + (SCHEMAS[state.view]?.label||"").toLowerCase()];
   document.getElementById("topbar-title").textContent = title || "";
   document.getElementById("topbar-sub").textContent = sub || "";
@@ -801,6 +973,9 @@ function render(){
   if (state.view === "dashboard") return renderDashboard();
   if (state.view === "finance") return renderFinance();
   if (state.view === "content") return renderContent();
+  if (state.view === "quotes") return renderQuotes();
+  if (state.view === "sales") return renderLedger("sales");
+  if (state.view === "expenses") return renderLedger("expenses");
   if (SCHEMAS[state.view]) return renderCrudView(state.view);
   viewRoot.innerHTML = "";
 }
@@ -894,8 +1069,8 @@ function renderFinance(){
   `;
   document.getElementById("income-table-root").innerHTML = buildTable("finance_income", income);
   document.getElementById("expense-table-root").innerHTML = buildTable("finance_expense", expense);
-  bindTableRowEvents("finance_income");
-  bindTableRowEvents("finance_expense");
+  bindTableRowEvents("finance_income", document.getElementById("income-table-root"));
+  bindTableRowEvents("finance_expense", document.getElementById("expense-table-root"));
   document.getElementById("btn-add-income").addEventListener("click", ()=>openModal("finance_income"));
   document.getElementById("btn-add-expense").addEventListener("click", ()=>openModal("finance_expense"));
 }
@@ -1019,6 +1194,7 @@ function buildTable(key, rows){
               ${cols.map(c => `<td>${renderCell(schema, c, r)}</td>`).join("")}
               <td>
                 <div class="row-actions">
+                  ${key==="clients" ? `<button class="icon-btn" data-profile="${r.id}" title="Ver perfil de empresa">👁</button>` : ""}
                   <button class="icon-btn" data-edit="${r.id}" title="Editar">✎</button>
                   <button class="icon-btn" data-del="${r.id}" title="Eliminar">🗑</button>
                 </div>
@@ -1042,14 +1218,16 @@ function renderCell(schema, key, row){
   if(!f) return escapeHtml(val ?? "—");
   if(f.type==="select-ref") return escapeHtml(refLabel(f.ref, val));
   if(f.type==="date") return fmtDate(val);
-  if(key==="monto" || key==="precioMensual" || key==="precio" || key==="total") return fmtMoney(val);
+  if(key==="monto" || key==="precioMensual" || key==="precio" || key==="total" || key==="subtotal" || key==="isv") return fmtMoney(val);
   if(key==="estado") return badgeHtml(val);
   if(key==="prioridad") return priorityBadge(val);
   return escapeHtml(val ?? "—") || "—";
 }
-function bindTableRowEvents(key){
-  document.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>openModal(key, b.dataset.edit)));
-  document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>confirmDelete(key, b.dataset.del)));
+function bindTableRowEvents(key, root){
+  root = root || document;
+  root.querySelectorAll("[data-profile]").forEach(b=>b.addEventListener("click",()=>openProfile(b.dataset.profile)));
+  root.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>openModal(key, b.dataset.edit)));
+  root.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>confirmDelete(key, b.dataset.del)));
 }
 function confirmDelete(key, id){
   const schema = SCHEMAS[key];
@@ -1071,14 +1249,14 @@ const modalForm = document.getElementById("modal-form");
 const modalGrid = document.getElementById("modal-form-grid");
 const modalTitle = document.getElementById("modal-title");
 
-function openModal(key, editId){
+function openModal(key, editId, prefill){
   const schema = SCHEMAS[key];
   state.modal = { schemaKey: key, editId: editId || null };
   const row = editId ? (state.cache[schema.collection]||[]).find(r=>r.id===editId) : null;
   modalTitle.textContent = (editId ? "Editar " : "Nuevo ") + schema.singular.toLowerCase();
 
   modalGrid.innerHTML = schema.fields.map(f => {
-    const value = row ? (row[f.key] ?? "") : (f.default ?? "");
+    const value = row ? (row[f.key] ?? "") : ((prefill && prefill[f.key] !== undefined) ? prefill[f.key] : (f.default ?? ""));
     const fullClass = f.full ? "full" : "";
     if(f.type === "select"){
       return `<div class="field ${fullClass}"><label>${f.label}</label>
@@ -1099,11 +1277,12 @@ function openModal(key, editId){
       return `<div class="field ${fullClass}"><label>${f.label}</label><textarea name="${f.key}">${escapeHtml(value)}</textarea></div>`;
     }
     return `<div class="field ${fullClass}"><label>${f.label}</label>
-      <input type="${f.type}" name="${f.key}" value="${escapeHtml(value)}" ${f.required?"required":""} />
+      <input type="${f.type}" ${f.type==="number" ? 'step="any"' : ""} name="${f.key}" value="${escapeHtml(value)}" ${f.required?"required":""} />
     </div>`;
   }).join("");
 
   modalOverlay.style.display = "flex";
+  if(key === "sales") bindSalesAutoTotal();
 }
 function closeModal(){ modalOverlay.style.display = "none"; modalForm.reset(); }
 document.getElementById("modal-close").addEventListener("click", closeModal);
@@ -1141,6 +1320,539 @@ modalForm.addEventListener("submit", async (e) => {
     saveBtn.textContent = "Guardar";
   }
 });
+
+/* =========================================================================
+   VENTAS · COTIZACIONES IMPRIMIBLES · PERFIL DE CLIENTE · REGISTROS MENSUALES
+   (módulo agregado; usa las mismas colecciones y no modifica datos existentes)
+   ========================================================================= */
+const byId = (id) => document.getElementById(id);
+const ISV_RATE = 0.15;
+const ISV_YES = "Con ISV (15%)";
+const ISV_NO = "Sin ISV (exento)";
+
+// Datos del emisor que salen impresos en la cotización.
+// Puedes llenar teléfono / correo / dirección / web y aparecerán en el encabezado.
+const COMPANY = {
+  marca: "Acapella Marketing",
+  razonSocial: "B-Market",
+  rtn: "02012001010084",
+  telefono: "+504 87995908",
+  correo: "acapellahn@gmail.com",
+  direccion: "Bo. El Centro, Trujillo, Colón",
+  web: "",
+};
+const DEFAULT_CONDICIONES = "Precios expresados en Lempiras (L).\nCotización válida hasta la fecha de vigencia indicada.";
+const LOGO_SRC = document.querySelector('link[rel="icon"]')?.href || "";
+const MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
+const clientById = (id) => (state.cache.clients || []).find(c => c.id === id);
+const quoteById = (id) => (state.cache.quotes || []).find(q => q.id === id);
+const clientName = (c) => (c && (c.empresa || c.nombre)) || "—";
+const monthLabel = (ym) => { const [y, m] = String(ym).split("-"); return (MONTHS[Number(m) - 1] || "") + " " + y; };
+const sumOf = (list, f) => list.reduce((s, r) => s + (Number(f(r)) || 0), 0);
+const isoLocal = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+
+function calcTotals(items){
+  let gravado = 0, exento = 0;
+  (items || []).forEach(it => {
+    const line = round2((Number(it.cantidad) || 0) * (Number(it.precio) || 0));
+    if (it.aplicaISV) gravado += line; else exento += line;
+  });
+  gravado = round2(gravado); exento = round2(exento);
+  const isv = round2(gravado * ISV_RATE);
+  return { gravado, exento, isv, total: round2(gravado + exento + isv) };
+}
+function nextQuoteNumber(){
+  const nums = (state.cache.quotes || [])
+    .map(q => parseInt(String(q.numero || "").replace(/\D/g, ""), 10))
+    .filter(n => !isNaN(n));
+  return "COT-" + String((nums.length ? Math.max(...nums) : 0) + 1).padStart(4, "0");
+}
+// Cotizaciones antiguas (sin detalle) se muestran como una sola línea con su total original.
+function quoteItems(q){
+  if (Array.isArray(q.items) && q.items.length) return q.items;
+  const svc = refLabel("services", q.servicioId);
+  return [{ descripcion: svc !== "—" ? svc : "Servicios de marketing", cantidad: 1, precio: Number(q.total) || 0, aplicaISV: false }];
+}
+function quoteTotals(q){
+  if (Array.isArray(q.items) && q.items.length) return calcTotals(q.items);
+  const t = Number(q.total) || 0;
+  return { gravado: 0, exento: t, isv: 0, total: t };
+}
+
+/* ------------------------- VISTA: COTIZACIONES ------------------------- */
+function renderQuotes(){
+  viewRoot.innerHTML = `
+    <div class="section-head">
+      <h2>📑 Cotizaciones</h2>
+      <button class="btn btn-primary" id="btn-new-quote">+ Nueva cotización</button>
+    </div>
+    <div class="toolbar">
+      <input type="search" id="quote-search" placeholder="Buscar por número, cliente o estado…" value="${escapeHtml(state.filters.quotes?.q || "")}" />
+    </div>
+    <div id="quotes-table-root"></div>`;
+  const paint = () => {
+    const q = (state.filters.quotes?.q || "").toLowerCase();
+    let rows = [...(state.cache.quotes || [])].sort((a, b) => String(b.numero || "").localeCompare(String(a.numero || "")));
+    if (q) rows = rows.filter(r => (String(r.numero || "") + " " + clientName(clientById(r.clienteId)) + " " + (r.estado || "")).toLowerCase().includes(q));
+    const root = byId("quotes-table-root");
+    root.innerHTML = quotesTableHtml(rows);
+    bindQuoteRowActions(root);
+  };
+  paint();
+  byId("btn-new-quote").addEventListener("click", () => openQuoteEditor());
+  byId("quote-search").addEventListener("input", (e) => { state.filters.quotes = { q: e.target.value }; paint(); });
+}
+function quotesTableHtml(rows){
+  if (!rows.length) return `<div class="table-wrap"><div class="empty-state"><div class="ic">📑</div><h3>Aún no hay cotizaciones</h3><p>Crea la primera con el botón "+ Nueva cotización".</p></div></div>`;
+  return `<div class="table-wrap"><table>
+    <thead><tr><th>No.</th><th>Cliente</th><th>Fecha</th><th>Vigencia</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+    <tbody>${rows.map(q => `<tr>
+      <td style="font-weight:600;">${escapeHtml(q.numero || "—")}</td>
+      <td>${escapeHtml(clientName(clientById(q.clienteId)))}</td>
+      <td>${fmtDate(q.fecha)}</td>
+      <td>${fmtDate(q.vigencia)}</td>
+      <td>${fmtMoney(q.total)}</td>
+      <td>${badgeHtml(q.estado)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" data-q-print="${q.id}" title="Imprimir / guardar PDF">🖨</button>
+        <button class="icon-btn" data-q-edit="${q.id}" title="Editar">✎</button>
+        <button class="icon-btn" data-q-sale="${q.id}" title="Registrar como venta">💵</button>
+        <button class="icon-btn" data-q-del="${q.id}" title="Eliminar">🗑</button>
+      </div></td></tr>`).join("")}</tbody></table></div>`;
+}
+function bindQuoteRowActions(root){
+  root.querySelectorAll("[data-q-print]").forEach(b => b.addEventListener("click", () => { const q = quoteById(b.dataset.qPrint); if (q) printQuote(q); }));
+  root.querySelectorAll("[data-q-edit]").forEach(b => b.addEventListener("click", () => openQuoteEditor(b.dataset.qEdit)));
+  root.querySelectorAll("[data-q-sale]").forEach(b => b.addEventListener("click", () => { const q = quoteById(b.dataset.qSale); if (q) quoteToSale(q); }));
+  root.querySelectorAll("[data-q-del]").forEach(b => b.addEventListener("click", () => confirmDelete("quotes", b.dataset.qDel)));
+}
+function quoteToSale(q){
+  const t = quoteTotals(q);
+  openModal("sales", null, {
+    fecha: todayISO(), clienteId: q.clienteId || "", concepto: "Cotización " + (q.numero || ""),
+    cotizacionNumero: q.numero || "", subtotal: round2(t.gravado + t.exento), isv: t.isv, total: t.total, estado: "Pendiente",
+  });
+}
+function bindSalesAutoTotal(){
+  const sub = modalForm.elements["subtotal"], isv = modalForm.elements["isv"], tot = modalForm.elements["total"];
+  if (!sub || !isv || !tot) return;
+  const upd = () => { tot.value = round2((Number(sub.value) || 0) + (Number(isv.value) || 0)); };
+  sub.addEventListener("input", upd);
+  isv.addEventListener("input", upd);
+}
+
+/* ------------------------- EDITOR DE COTIZACIÓN ------------------------- */
+const quoteOverlay = byId("quote-overlay");
+const quoteModal = byId("quote-modal");
+let qe = null; // estado del editor
+
+function openQuoteEditor(id, presetClientId){
+  const q = id ? quoteById(id) : null;
+  const blank = () => ({ descripcion: "", cantidad: 1, precio: 0, aplicaISV: true });
+  qe = {
+    id: id || null,
+    numero: q?.numero || nextQuoteNumber(),
+    items: q ? quoteItems(q).map(i => ({ descripcion: i.descripcion || "", cantidad: Number(i.cantidad) || 0, precio: Number(i.precio) || 0, aplicaISV: !!i.aplicaISV })) : [blank()],
+    blank,
+  };
+  const clients = [...(state.cache.clients || [])].sort((a, b) => clientName(a).localeCompare(clientName(b)));
+  const products = [...(state.cache.products || [])].sort((a, b) => String(a.nombre || "").localeCompare(String(b.nombre || "")));
+  const services = [...(state.cache.services || [])].sort((a, b) => String(a.nombre || "").localeCompare(String(b.nombre || "")));
+  const selClient = q?.clienteId || presetClientId || "";
+  const fecha = q ? (q.fecha || "") : todayISO();
+  const vig = q ? (q.vigencia || "") : (() => { const d = new Date(); d.setDate(d.getDate() + 15); return isoLocal(d); })();
+  const estado = q?.estado || "Borrador";
+  const cond = q ? (q.condiciones ?? "") : DEFAULT_CONDICIONES;
+
+  quoteModal.innerHTML = `
+    <div class="modal-head">
+      <h3>${id ? "Editar" : "Nueva"} cotización · <span style="color:var(--yellow);">${escapeHtml(qe.numero)}</span></h3>
+      <button class="modal-close" id="qe-close" type="button">✕</button>
+    </div>
+    <div class="q-grid">
+      <div class="field"><label>Cliente</label>
+        <select id="qe-client">
+          <option value="">Selecciona un cliente…</option>
+          ${clients.map(c => `<option value="${c.id}" ${c.id === selClient ? "selected" : ""}>${escapeHtml(clientName(c))}</option>`).join("")}
+        </select></div>
+      <div class="field"><label>Fecha</label><input type="date" id="qe-fecha" value="${escapeHtml(fecha)}" /></div>
+      <div class="field"><label>Vigencia</label><input type="date" id="qe-vigencia" value="${escapeHtml(vig)}" /></div>
+      <div class="field"><label>Estado</label>
+        <select id="qe-estado">
+          ${["Borrador", "Enviada", "Aceptada", "Rechazada"].map(o => `<option ${o === estado ? "selected" : ""}>${o}</option>`).join("")}
+        </select></div>
+    </div>
+    <div id="qe-client-card" style="margin-bottom:18px;"></div>
+
+    <div class="section-head" style="margin-bottom:10px;">
+      <h2 style="font-size:15px;">Detalle de la cotización</h2>
+      <div class="q-add">
+        ${products.length ? `<select id="qe-add-product"><option value="">+ Agregar producto…</option>${products.map(p => `<option value="${p.id}">${escapeHtml(p.nombre || "")} — ${fmtMoney(p.precio)}</option>`).join("")}</select>` : ""}
+        ${services.length ? `<select id="qe-add-service"><option value="">+ Agregar servicio…</option>${services.map(s => `<option value="${s.id}">${escapeHtml(s.nombre || "")} — ${fmtMoney(s.precio)}</option>`).join("")}</select>` : ""}
+        <button type="button" class="btn btn-ghost" id="qe-add-blank">+ Línea en blanco</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="q-items">
+        <thead><tr><th>Descripción</th><th style="width:80px;">Cant.</th><th style="width:130px;">Precio unit. (sin ISV)</th><th style="width:120px;">ISV</th><th style="width:120px; text-align:right;">Importe</th><th style="width:44px;"></th></tr></thead>
+        <tbody id="qe-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="q-bottom">
+      <div class="field" style="margin:0;"><label>Condiciones / notas (salen impresas)</label>
+        <textarea id="qe-cond" rows="6">${escapeHtml(cond)}</textarea></div>
+      <div class="q-totals" id="qe-totals"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="qe-cancel">Cancelar</button>
+      <button type="button" class="btn btn-ghost" id="qe-save">Guardar</button>
+      <button type="button" class="btn btn-primary" id="qe-save-print">Guardar e imprimir 🖨</button>
+    </div>`;
+
+  qeRenderRows();
+  qeRenderClientCard();
+  qeUpdateTotals();
+
+  byId("qe-client").addEventListener("change", qeRenderClientCard);
+  const tb = byId("qe-rows");
+  const onEdit = (e) => {
+    const tr = e.target.closest("tr[data-i]"); const f = e.target.dataset.f;
+    if (!tr || !f) return;
+    const it = qe.items[Number(tr.dataset.i)];
+    it[f] = f === "descripcion" ? e.target.value : (f === "aplicaISV" ? e.target.value === "1" : Number(e.target.value) || 0);
+    qeUpdateTotals();
+  };
+  tb.addEventListener("input", onEdit);
+  tb.addEventListener("change", onEdit);
+  tb.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-rm]"); if (!b) return;
+    qe.items.splice(Number(b.dataset.rm), 1);
+    if (!qe.items.length) qe.items.push(qe.blank());
+    qeRenderRows(); qeUpdateTotals();
+  });
+  byId("qe-add-blank").addEventListener("click", () => {
+    qe.items.push(qe.blank()); qeRenderRows(); qeUpdateTotals();
+    const last = tb.querySelector("tr:last-child textarea"); if (last) last.focus();
+  });
+  const pSel = byId("qe-add-product");
+  if (pSel) pSel.addEventListener("change", () => {
+    const p = products.find(x => x.id === pSel.value); pSel.value = ""; if (!p) return;
+    qeAddItem({ descripcion: p.nombre || "", cantidad: 1, precio: Number(p.precio) || 0, aplicaISV: p.aplicaISV !== ISV_NO });
+  });
+  const sSel = byId("qe-add-service");
+  if (sSel) sSel.addEventListener("change", () => {
+    const s = services.find(x => x.id === sSel.value); sSel.value = ""; if (!s) return;
+    qeAddItem({ descripcion: s.nombre || "", cantidad: 1, precio: Number(s.precio) || 0, aplicaISV: true });
+  });
+  byId("qe-close").addEventListener("click", closeQuoteEditor);
+  byId("qe-cancel").addEventListener("click", closeQuoteEditor);
+  byId("qe-save").addEventListener("click", () => qeSave(false));
+  byId("qe-save-print").addEventListener("click", () => qeSave(true));
+  quoteOverlay.style.display = "flex";
+}
+function closeQuoteEditor(){ quoteOverlay.style.display = "none"; qe = null; }
+
+function qeAddItem(item){
+  // si la única línea está vacía, la reemplaza
+  if (qe.items.length === 1 && !qe.items[0].descripcion && !Number(qe.items[0].precio)) qe.items = [item];
+  else qe.items.push(item);
+  qeRenderRows(); qeUpdateTotals();
+}
+function qeRenderRows(){
+  byId("qe-rows").innerHTML = qe.items.map((it, i) => `
+    <tr data-i="${i}">
+      <td><textarea class="q-in" rows="2" data-f="descripcion" placeholder="Descripción del producto o servicio">${escapeHtml(it.descripcion)}</textarea></td>
+      <td><input class="q-in" type="number" step="any" min="0" data-f="cantidad" value="${it.cantidad}" /></td>
+      <td><input class="q-in" type="number" step="any" min="0" data-f="precio" value="${it.precio}" /></td>
+      <td><select class="q-in" data-f="aplicaISV">
+        <option value="1" ${it.aplicaISV ? "selected" : ""}>Con ISV</option>
+        <option value="0" ${!it.aplicaISV ? "selected" : ""}>Sin ISV</option>
+      </select></td>
+      <td class="q-amt" data-amt></td>
+      <td><button type="button" class="icon-btn" data-rm="${i}" title="Quitar línea">✕</button></td>
+    </tr>`).join("");
+}
+function qeUpdateTotals(){
+  byId("qe-rows").querySelectorAll("tr[data-i]").forEach(tr => {
+    const it = qe.items[Number(tr.dataset.i)];
+    tr.querySelector("[data-amt]").textContent = fmtMoney(round2((Number(it.cantidad) || 0) * (Number(it.precio) || 0)));
+  });
+  const t = calcTotals(qe.items);
+  byId("qe-totals").innerHTML = `
+    <div class="row"><span>Subtotal con ISV (gravado)</span><span>${fmtMoney(t.gravado)}</span></div>
+    <div class="row"><span>Subtotal sin ISV (exento)</span><span>${fmtMoney(t.exento)}</span></div>
+    <div class="row"><span>ISV 15%</span><span>${fmtMoney(t.isv)}</span></div>
+    <div class="row total"><span>TOTAL</span><span>${fmtMoney(t.total)}</span></div>`;
+}
+function clientInfoRows(c){
+  const rows = [];
+  const main = clientName(c);
+  rows.push(["Cliente", main]);
+  if (c.empresa && c.nombre && c.nombre !== c.empresa) rows.push(["Nombre", c.nombre]);
+  rows.push(["Razón social", c.razonSocial]);
+  rows.push(["RTN", c.rtn]);
+  rows.push(["Dirección", [c.direccion, c.ciudad].filter(Boolean).join(", ")]);
+  rows.push(["Atención", c.contacto]);
+  rows.push(["Teléfono", c.telefono]);
+  rows.push(["Correo", c.correo]);
+  return rows.filter(([, v]) => v);
+}
+function qeRenderClientCard(){
+  const c = clientById(byId("qe-client").value);
+  const box = byId("qe-client-card");
+  if (!c) { box.innerHTML = `<div class="q-hint">Selecciona un cliente: sus datos (RTN, razón social, dirección, contacto) se imprimen automáticamente en la cotización.</div>`; return; }
+  const missing = [];
+  if (!c.rtn) missing.push("RTN"); if (!c.razonSocial) missing.push("razón social"); if (!c.direccion) missing.push("dirección");
+  box.innerHTML = `<div class="q-client-card">${clientInfoRows(c).map(([k, v]) => `<div><span class="k">${k}</span><span class="v">${escapeHtml(v)}</span></div>`).join("")}</div>
+    ${missing.length ? `<div class="q-hint">⚠ Al perfil de este cliente le falta: ${missing.join(", ")}. Complétalo en Clientes → ✎ Editar.</div>` : ""}`;
+}
+async function qeSave(thenPrint){
+  const clienteId = byId("qe-client").value;
+  if (!clienteId) { toast("Selecciona un cliente.", true); return; }
+  const items = qe.items
+    .filter(i => (i.descripcion || "").trim() || Number(i.precio))
+    .map(i => ({ descripcion: (i.descripcion || "").trim(), cantidad: Number(i.cantidad) || 0, precio: Number(i.precio) || 0, aplicaISV: !!i.aplicaISV }));
+  if (!items.length) { toast("Agrega al menos un producto o servicio.", true); return; }
+  const t = calcTotals(items);
+  const data = {
+    numero: qe.numero, clienteId,
+    fecha: byId("qe-fecha").value, vigencia: byId("qe-vigencia").value, estado: byId("qe-estado").value,
+    items, subtotalGravado: t.gravado, subtotalExento: t.exento, isv: t.isv, total: t.total,
+    condiciones: byId("qe-cond").value,
+  };
+  const btns = [byId("qe-save"), byId("qe-save-print")]; btns.forEach(b => b.disabled = true);
+  try {
+    let id = qe.id;
+    if (id) { await updateDoc(doc(db, "quotes", id), data); }
+    else { const ref = await addDoc(collection(db, "quotes"), { ...data, creadoEn: serverTimestamp() }); id = ref.id; }
+    toast("Cotización " + data.numero + " guardada.");
+    closeQuoteEditor();
+    if (thenPrint) printQuote({ id, ...data });
+  } catch (err) {
+    console.error(err);
+    toast("No se pudo guardar la cotización. Revisa la conexión o las reglas de Firestore.", true);
+    btns.forEach(b => b.disabled = false);
+  }
+}
+
+/* ------------------------- IMPRESIÓN / PDF ------------------------- */
+function printQuote(q){
+  const c = clientById(q.clienteId) || {};
+  const items = quoteItems(q);
+  const t = quoteTotals(q);
+  const num = q.numero || ("COT-" + String(q.id || "").slice(0, 6).toUpperCase());
+  const contact = [COMPANY.telefono, COMPANY.correo, COMPANY.web].filter(Boolean).join("  ·  ");
+  const rows = items.map((it, i) => {
+    const line = round2((Number(it.cantidad) || 0) * (Number(it.precio) || 0));
+    return `<tr>
+      <td class="c">${i + 1}</td>
+      <td class="desc">${escapeHtml(it.descripcion || "")}</td>
+      <td class="c">${Number(it.cantidad) || 0}</td>
+      <td class="r">${fmtMoney(it.precio)}</td>
+      <td class="c">${it.aplicaISV ? '<span class="qp-tag">15%</span>' : '<span class="qp-tag ex">Exento</span>'}</td>
+      <td class="r"><strong>${fmtMoney(line)}</strong></td></tr>`;
+  }).join("");
+  const html = `<div class="qp">
+    <div class="qp-head">
+      <div class="qp-brand">
+        ${LOGO_SRC ? `<img class="qp-logo" src="${LOGO_SRC}" alt="Acapella Marketing" />` : ""}
+        <div>
+          <div class="qp-brand-name">ACAPELLA <span>MARKETING</span></div>
+          <div class="qp-brand-sub">Razón social: ${escapeHtml(COMPANY.razonSocial)} &nbsp;·&nbsp; RTN: ${escapeHtml(COMPANY.rtn)}</div>
+          ${COMPANY.direccion ? `<div class="qp-brand-sub">${escapeHtml(COMPANY.direccion)}</div>` : ""}
+          ${contact ? `<div class="qp-brand-sub">${escapeHtml(contact)}</div>` : ""}
+        </div>
+      </div>
+      <div class="qp-doc">
+        <div class="qp-doc-title">COTIZACIÓN</div>
+        <div class="qp-doc-num">${escapeHtml(num)}</div>
+        ${q.fecha ? `<div class="qp-doc-meta">Fecha: ${escapeHtml(fmtDate(q.fecha))}</div>` : ""}
+        ${q.vigencia ? `<div class="qp-doc-meta">Válida hasta: ${escapeHtml(fmtDate(q.vigencia))}</div>` : ""}
+      </div>
+    </div>
+
+    <div class="qp-title">Datos del cliente</div>
+    <div class="qp-client">${clientInfoRows(c).map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${escapeHtml(v)}</div></div>`).join("") || '<div class="v">—</div>'}</div>
+
+    <div class="qp-title">Detalle</div>
+    <table class="qp-table">
+      <thead><tr><th style="width:28px;" class="c">#</th><th>Descripción</th><th style="width:50px;" class="c">Cant.</th><th style="width:100px;" class="r">Precio unit.</th><th style="width:60px;" class="c">ISV</th><th style="width:105px;" class="r">Importe</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="qp-totals">
+      <div class="row"><span>Subtotal gravado (con ISV)</span><span>${fmtMoney(t.gravado)}</span></div>
+      <div class="row"><span>Subtotal exento (sin ISV)</span><span>${fmtMoney(t.exento)}</span></div>
+      <div class="row"><span>ISV 15%</span><span>${fmtMoney(t.isv)}</span></div>
+      <div class="row total"><span>TOTAL A PAGAR</span><span>${fmtMoney(t.total)}</span></div>
+    </div>
+
+    ${(q.condiciones || "").trim() ? `<div class="qp-title">Condiciones</div><div class="qp-cond">${escapeHtml(q.condiciones)}</div>` : ""}
+
+    <div class="qp-sign"><div>Elaborado por Acapella Marketing</div><div>Aceptado por (firma y sello del cliente)</div></div>
+    <div class="qp-foot"><strong>${escapeHtml(COMPANY.marca)}</strong> · ${escapeHtml(COMPANY.razonSocial)} · RTN ${escapeHtml(COMPANY.rtn)}<br/>Gracias por confiar en nosotros.</div>
+  </div>`;
+  const root = byId("print-root");
+  root.innerHTML = html;
+  const prevTitle = document.title;
+  document.title = ("Cotizacion " + num + " - " + clientName(c)).replace(/[\\/:*?"<>|]/g, "");
+  const restore = () => { document.title = prevTitle; window.removeEventListener("afterprint", restore); };
+  window.addEventListener("afterprint", restore);
+  const img = root.querySelector("img");
+  const go = () => setTimeout(() => window.print(), 60);
+  if (img && !img.complete) { img.onload = go; img.onerror = go; } else go();
+}
+
+/* ------------------------- VENTAS Y GASTOS: REGISTRO MENSUAL ------------------------- */
+function renderLedger(kind){
+  const isSales = kind === "sales";
+  const key = isSales ? "sales" : "finance_expense";
+  const all = state.cache[SCHEMAS[key].collection] || [];
+  const amt = (r) => Number(isSales ? r.total : r.monto) || 0;
+  const month = state.filters.ledgerMonth || todayISO().slice(0, 7);
+  const isAll = month === "all";
+  const year = isAll ? todayISO().slice(0, 4) : month.slice(0, 4);
+  const inPeriod = (r) => isAll || (r.fecha || "").startsWith(month);
+  const rows = all.filter(inPeriod).sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")));
+  const periodLabel = isAll ? "todo el registro" : monthLabel(month);
+  const total = sumOf(rows, amt);
+
+  const salesAll = state.cache.sales || [];
+  const expAll = state.cache.finance_expense || [];
+  const periodSales = sumOf(salesAll.filter(inPeriod), r => r.total);
+  const periodExp = sumOf(expAll.filter(inPeriod), r => r.monto);
+
+  let stats;
+  if (isSales) {
+    stats = [
+      statCard("Ventas", fmtMoney(total), `${rows.length} venta${rows.length === 1 ? "" : "s"} · ${periodLabel}`),
+      statCard("ISV facturado", fmtMoney(sumOf(rows, r => r.isv)), "incluido en el total"),
+      statCard("Cobrado", fmtMoney(sumOf(rows.filter(r => r.estado === "Pagado"), r => r.total)), ""),
+      statCard("Por cobrar", fmtMoney(sumOf(rows.filter(r => r.estado === "Pendiente"), r => r.total)), ""),
+    ];
+  } else {
+    const byCat = {};
+    rows.forEach(r => { const k = (r.categoria || "Sin categoría").trim() || "Sin categoría"; byCat[k] = (byCat[k] || 0) + amt(r); });
+    const top = Object.entries(byCat).sort((a, b) => b[1] - a[1])[0];
+    stats = [
+      statCard("Gastos", fmtMoney(total), `${rows.length} registro${rows.length === 1 ? "" : "s"} · ${periodLabel}`),
+      statCard("Ventas del periodo", fmtMoney(periodSales), ""),
+      statCard("Resultado", fmtMoney(periodSales - periodExp), "ventas − gastos"),
+      statCard("Mayor categoría", top ? escapeHtml(top[0]) : "—", top ? fmtMoney(top[1]) : ""),
+    ];
+  }
+
+  const summary = MONTHS.map((m, i) => {
+    const p = year + "-" + pad2(i + 1);
+    const v = sumOf(salesAll.filter(r => (r.fecha || "").startsWith(p)), r => r.total);
+    const g = sumOf(expAll.filter(r => (r.fecha || "").startsWith(p)), r => r.monto);
+    return { p, m, v, g, u: v - g };
+  });
+  const yv = sumOf(summary, r => r.v), yg = sumOf(summary, r => r.g);
+
+  viewRoot.innerHTML = `
+    <div class="section-head">
+      <h2>${isSales ? "🧾 Registro de ventas" : "💸 Registro de gastos"}</h2>
+      <button class="btn btn-primary" id="btn-ledger-add">+ ${isSales ? "Nueva venta" : "Nuevo gasto"}</button>
+    </div>
+    <div class="toolbar">
+      <label style="color:var(--text-mute); font-size:12.5px;">Mes</label>
+      <input type="month" id="ledger-month" value="${isAll ? "" : month}" />
+      <button class="filter-tab ${isAll ? "active" : ""}" id="ledger-all">Ver todo</button>
+    </div>
+    <div class="grid grid-4" style="margin-bottom:20px;">${stats.join("")}</div>
+    <div id="ledger-table-root" style="margin-bottom:28px;"></div>
+    <div class="section-head"><h2 style="font-size:15px;">📆 Resumen mensual ${year}</h2></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Mes</th><th>Ventas</th><th>Gastos</th><th>Utilidad</th></tr></thead>
+      <tbody>
+        ${summary.map(r => `<tr class="month-row ${r.p === month ? "sel" : ""}" data-month="${r.p}">
+          <td>${r.m}</td><td>${fmtMoney(r.v)}</td><td>${fmtMoney(r.g)}</td>
+          <td style="color:${r.u < 0 ? "var(--danger)" : "var(--text)"};">${fmtMoney(r.u)}</td></tr>`).join("")}
+        <tr class="sum-total"><td>Total ${year}</td><td>${fmtMoney(yv)}</td><td>${fmtMoney(yg)}</td>
+          <td style="color:${yv - yg < 0 ? "var(--danger)" : "var(--yellow)"};">${fmtMoney(yv - yg)}</td></tr>
+      </tbody></table></div>`;
+
+  const tableRoot = byId("ledger-table-root");
+  tableRoot.innerHTML = buildTable(key, rows);
+  bindTableRowEvents(key, tableRoot);
+  byId("btn-ledger-add").addEventListener("click", () => openModal(key, null, { fecha: todayISO() }));
+  byId("ledger-month").addEventListener("change", (e) => { state.filters.ledgerMonth = e.target.value || todayISO().slice(0, 7); render(); });
+  byId("ledger-all").addEventListener("click", () => { state.filters.ledgerMonth = isAll ? todayISO().slice(0, 7) : "all"; render(); });
+  viewRoot.querySelectorAll(".month-row").forEach(tr => tr.addEventListener("click", () => { state.filters.ledgerMonth = tr.dataset.month; render(); }));
+}
+
+/* ------------------------- PERFIL DE EMPRESA DEL CLIENTE ------------------------- */
+const profileOverlay = byId("profile-overlay");
+const profileModal = byId("profile-modal");
+function openProfile(id){ state.profileId = id; renderProfile(); profileOverlay.style.display = "flex"; }
+function closeProfile(){ state.profileId = null; profileOverlay.style.display = "none"; }
+profileOverlay.addEventListener("click", (e) => { if (e.target === profileOverlay) closeProfile(); });
+
+function renderProfile(){
+  const c = clientById(state.profileId);
+  if (!c) { closeProfile(); return; }
+  const quotes = (state.cache.quotes || []).filter(q => q.clienteId === c.id).sort((a, b) => String(b.numero || "").localeCompare(String(a.numero || "")));
+  const sales = (state.cache.sales || []).filter(s => s.clienteId === c.id).sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")));
+  const missing = [];
+  if (!c.rtn) missing.push("RTN"); if (!c.razonSocial) missing.push("razón social"); if (!c.direccion) missing.push("dirección");
+  const row = (k, v) => `<div class="p-row"><span class="k">${k}</span><span class="v">${v ? escapeHtml(v) : "—"}</span></div>`;
+  const initials = clientName(c).split(/\s+/).slice(0, 2).map(w => w[0] || "").join("").toUpperCase();
+
+  profileModal.innerHTML = `
+    <div class="p-head">
+      <div class="p-id">
+        <div class="p-avatar">${escapeHtml(initials || "?")}</div>
+        <div style="min-width:0;">
+          <h3 style="font-size:20px;">${escapeHtml(clientName(c))}</h3>
+          <div style="margin-top:4px;">${badgeHtml(c.estado)}</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn btn-primary" id="pf-quote">+ Nueva cotización</button>
+        <button class="btn btn-ghost" id="pf-edit">✎ Editar cliente</button>
+        <button class="btn btn-ghost" id="pf-close">Cerrar</button>
+      </div>
+    </div>
+    ${missing.length ? `<div class="q-hint" style="margin:-6px 0 14px;">⚠ Perfil incompleto: falta ${missing.join(", ")}.</div>` : ""}
+    <div class="p-stats">
+      ${statCard("Cotizado", fmtMoney(sumOf(quotes, q => q.total)), quotes.length + " cotización(es)")}
+      ${statCard("Vendido", fmtMoney(sumOf(sales, s => s.total)), sales.length + " venta(s)")}
+      ${statCard("Por cobrar", fmtMoney(sumOf(sales.filter(s => s.estado === "Pendiente"), s => s.total)), "")}
+      ${statCard("Mensualidad", fmtMoney(c.precioMensual), c.diaPago ? "pago el día " + c.diaPago : "")}
+    </div>
+    <div class="p-grid">
+      <div class="p-card"><h4>Empresa</h4>
+        ${row("Razón social", c.razonSocial)}${row("RTN", c.rtn)}${row("Giro / rubro", c.giro)}
+        ${row("Dirección", [c.direccion, c.ciudad].filter(Boolean).join(", "))}
+      </div>
+      <div class="p-card"><h4>Contacto</h4>
+        ${row("Nombre", c.nombre)}${row("Contacto", c.contacto)}${row("Teléfono", c.telefono)}${row("Correo", c.correo)}${row("Redes", c.redes)}
+      </div>
+      <div class="p-card"><h4>Servicio</h4>
+        ${row("Plan contratado", c.plan)}${row("Cliente desde", c.fechaInicio ? fmtDate(c.fechaInicio) : "")}${row("Notas", c.notas)}
+      </div>
+    </div>
+    <div class="p-sub">📑 Cotizaciones</div>
+    ${quotes.length ? `<div class="table-wrap"><table>
+      <thead><tr><th>No.</th><th>Fecha</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+      <tbody>${quotes.map(q => `<tr><td style="font-weight:600;">${escapeHtml(q.numero || "—")}</td><td>${fmtDate(q.fecha)}</td><td>${fmtMoney(q.total)}</td><td>${badgeHtml(q.estado)}</td>
+        <td><div class="row-actions"><button class="icon-btn" data-q-print="${q.id}" title="Imprimir">🖨</button><button class="icon-btn" data-q-edit="${q.id}" title="Editar">✎</button></div></td></tr>`).join("")}</tbody></table></div>`
+      : `<div class="table-wrap"><div class="empty-state" style="padding:26px;"><p style="margin:0;">Este cliente aún no tiene cotizaciones.</p></div></div>`}
+    <div class="p-sub">🧾 Ventas</div>
+    ${sales.length ? `<div class="table-wrap"><table>
+      <thead><tr><th>Fecha</th><th>Concepto</th><th>Total</th><th>Estado</th></tr></thead>
+      <tbody>${sales.map(s => `<tr><td>${fmtDate(s.fecha)}</td><td>${escapeHtml(s.concepto || "")}</td><td>${fmtMoney(s.total)}</td><td>${badgeHtml(s.estado)}</td></tr>`).join("")}</tbody></table></div>`
+      : `<div class="table-wrap"><div class="empty-state" style="padding:26px;"><p style="margin:0;">Sin ventas registradas.</p></div></div>`}
+  `;
+  byId("pf-close").addEventListener("click", closeProfile);
+  byId("pf-edit").addEventListener("click", () => openModal("clients", c.id));
+  byId("pf-quote").addEventListener("click", () => openQuoteEditor(null, c.id));
+  bindQuoteRowActions(profileModal);
+}
 
 /* ===================== IMPORTAR PLANIFICACIÓN MENSUAL ===================== */
 const importOverlay = document.getElementById("import-overlay");
